@@ -7,13 +7,19 @@ namespace db
     {
         public DbSet<Company> Companies { get; set; }
         public DbSet<Employee> Employees { get; set; }
-        private string dbPath = @$"D:\database\belgosles_test_db_sqlite.db";
+        private string dbPath = @$"belgosles_test_db_sqlite.db";
         public string DbPath { get; }
 
-        public ApplicationDBContext()
+        public ApplicationDBContext(string dbPath)
         {
+            this.dbPath = dbPath;
             Database.EnsureCreated();
         }
+
+        //public ApplicationDBContext()
+        //{
+        //    Database.EnsureCreated();
+        //}
         protected override void OnConfiguring(DbContextOptionsBuilder optionbuilder)
         {
 

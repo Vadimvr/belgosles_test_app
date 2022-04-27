@@ -1,4 +1,5 @@
-﻿using db;
+﻿using belgosles_test_app.Models;
+using db;
 using models;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace belgosles_test_app.Services.db
         public static List<Company> Get()
         {
             List<Company> res = new List<Company>();
-            using (ApplicationDBContext db = new ApplicationDBContext())
+            using (ApplicationDBContext db = new ApplicationDBContext(PathToDb.Path))
             {
                 res = db.Companies.ToList();
             }
@@ -20,7 +21,7 @@ namespace belgosles_test_app.Services.db
 
         internal static void Set(string newCompanyName)
         {
-            using (ApplicationDBContext db = new ApplicationDBContext())
+            using (ApplicationDBContext db = new ApplicationDBContext(PathToDb.Path))
             {
                 Company compony = db.Companies.FirstOrDefault(x => x.CompanyName == newCompanyName);
                 if (compony == null)
@@ -33,7 +34,7 @@ namespace belgosles_test_app.Services.db
         internal static void Delete(Company selectCompany)
         {
 
-            using (ApplicationDBContext db = new ApplicationDBContext())
+            using (ApplicationDBContext db = new ApplicationDBContext(PathToDb.Path))
             {
                 if (selectCompany != null)
                 {
@@ -47,7 +48,7 @@ namespace belgosles_test_app.Services.db
         {
             if (oldCompany != null)
             {
-                using (ApplicationDBContext db = new ApplicationDBContext())
+                using (ApplicationDBContext db = new ApplicationDBContext(PathToDb.Path))
                 {
                     Company compony = db.Companies.FirstOrDefault(x => x.CompanyId == oldCompany.CompanyId);
                     if (compony != null)

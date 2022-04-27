@@ -1,4 +1,5 @@
 ﻿using belgosles_test_app.Infrastructure.Commands;
+using belgosles_test_app.Models;
 using belgosles_test_app.Services;
 using belgosles_test_app.Services.db;
 using belgosles_test_app.Services.Interfaces;
@@ -12,6 +13,8 @@ namespace belgosles_test_app.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
+        static string dbPath = @$"D:\database\belgosles_test_db_sqlite.db";
+
         private readonly IUserDialog _UserDialog;
         private readonly IDataService _DataService;
 
@@ -41,6 +44,7 @@ namespace belgosles_test_app.ViewModels
         public ObservableCollection<Company> Companies { get => companies; set => Set(ref companies, value); }
         public MainWindowViewModel(IUserDialog UserDialog, IDataService DataService)
         {
+
             _UserDialog = UserDialog;
             _DataService = DataService;
             RefreshComponyCommand = new LambdaCommand(OnRefreshComponyCommandExecuted, CanRefreshComponyCommandExecute);
@@ -58,13 +62,15 @@ namespace belgosles_test_app.ViewModels
             SaveEmployeesUnderDeportationCommand = new LambdaCommand(OnSaveEmployeesUnderDeportationCommandExecuted, CanSaveEmployeesUnderDeportationCommandExecute);
             ExportXMLCommand = new LambdaCommand(OnExportXMLCommandExecuted, CanExportXMLCommandExecute);
             ExportJsonCommand = new LambdaCommand(OnExportJsonCommandExecuted, CanExportJsonCommandExecute);
+            OpenDataBaseCommand = new LambdaCommand(OnOpenDataBaseCommandExecuted, CanOpenDataBaseCommandExecute);
+
 
         }
 
         public List<Employee> ImmutableListOfEmployees { get; set; }
         public ICommand RefreshComponyCommand { get; }
 
-        private bool CanRefreshComponyCommandExecute(object p) => true;
+        private bool CanRefreshComponyCommandExecute(object p) => !string.IsNullOrEmpty(PathToDb.Path);
         private void OnRefreshComponyCommandExecuted(object p)
         {
             Companies = new ObservableCollection<Company>(CompanyHandler.Get());
@@ -195,9 +201,19 @@ namespace belgosles_test_app.ViewModels
         private bool CanRemoveEmployeeCommandExecute(object p) => SelectEmployee != null;
         private void OnRemoveEmployeeCommandExecuted(object p)
         {
+            int tempIndex = Employees.IndexOf(SelectEmployee);
             EmpluesHandler.Del(SelectEmployee);
             ImmutableListOfEmployees = EmpluesHandler.Get(SelectCompany);
             Employees = new ObservableCollection<Employee>(ImmutableListOfEmployees);
+
+            if (tempIndex < Employees.Count)
+            {
+                SelectEmployee = Employees[tempIndex];
+            }
+            else if(Employees.Count > 0)
+            {
+                SelectEmployee = Employees[tempIndex-1];
+            }
 
         }
 
@@ -422,10 +438,10 @@ namespace belgosles_test_app.ViewModels
 
         public ICommand ExportJsonCommand { get; }
 
-        private bool CanExportJsonCommandExecute(object p) => Employees!=null && Employees.Count >0;
+        private bool CanExportJsonCommandExecute(object p) => Employees != null && Employees.Count > 0;
         private void OnExportJsonCommandExecuted(object p)
         {
-            SaveInJson.Save(Employees,SelectCompany);
+            SaveInJson.Save(Employees, SelectCompany);
         }
 
         public ICommand ExportXMLCommand { get; }
@@ -434,6 +450,26 @@ namespace belgosles_test_app.ViewModels
         private void OnExportXMLCommandExecuted(object p)
         {
             SaveInXml.Save(Employees, SelectCompany);
+        }
+
+
+        public ICommand OpenDataBaseCommand { get; }
+
+        private bool CanOpenDataBaseCommandExecute(object p) => true;
+        private void OnOpenDataBaseCommandExecuted(object p)
+        {
+
+            var res = OPenFileDialog.Open();
+            if (res.Item1)
+            {
+                PathToDb.Path = res.Item2;
+                Status = "OK!";
+                OnRefreshComponyCommandExecuted(p);
+            }
+            else
+            {
+                Status = "Отмена";
+            }
         }
 
 

@@ -45,7 +45,10 @@
             <StackPanel Grid.Row="1">
                 <UniformGrid DockPanel.Dock="Bottom" Columns="1">
                     <StackPanel >
-                        <Button  Style="{StaticResource ButtonStyleRight}" Command="{Binding RefreshComponyCommand}" Content="Обновить"/>
+                        <DockPanel>
+                            <Button  Style="{StaticResource ButtonStyleRight}" Command="{Binding OpenDataBaseCommand}" Content="Открыть Базу данных" Width="130"/>
+                            <Button  Style="{StaticResource ButtonStyleRight}" Command="{Binding RefreshComponyCommand}" Content="Обновить"/>
+                        </DockPanel>
                         <DockPanel>
                             <Label Width="120" Content="Название компании"/>
                             <TextBox Style="{StaticResource TextBoxStyle}" Text="{Binding NewCompanyName}" Margin="5"/>
@@ -94,7 +97,7 @@
                     <DockPanel>
                         <Button Content="Удалить работника" Style="{StaticResource ButtomStyle}" Command="{Binding RemoveEmployeeCommand}"></Button>
                         <Button Content="Изменить работника" Style="{StaticResource ButtomStyle}" Command="{Binding EditEmployeeCommand}"></Button>
-                       <Grid HorizontalAlignment="Left">
+                        <Grid HorizontalAlignment="Left">
                             <Button Content="Сохранить работника"  
                                     Style="{StaticResource ButtomStyle}" 
                                     Command="{Binding SaveEmployeeCommand}"  
@@ -102,15 +105,15 @@
                             <Button Content="Добавить работника"  
                                     Style="{StaticResource ButtomStyle}" 
                                     Command="{Binding AddNewEmployeeCommand}"  
-                                    Visibility="{Binding AddNewEmployeeCommandVisibility}"/> 
-                        
+                                    Visibility="{Binding AddNewEmployeeCommandVisibility}"/>
+
                         </Grid>
                     </DockPanel>
                     <DockPanel>
                         <Button Content="Экспорт работников в XML" Style="{StaticResource ButtomStyle}" Command="{Binding ExportXMLCommand}"></Button>
                         <Button Content="Экспорт работников в JSON" Style="{StaticResource ButtomStyle}" Command="{Binding ExportJsonCommand}"></Button>
                         <Grid>
-                            
+
                         </Grid>
                     </DockPanel>
                 </UniformGrid>

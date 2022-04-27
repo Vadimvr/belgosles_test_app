@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System;
+using belgosles_test_app.Models;
 
 namespace belgosles_test_app.Services.db
 {
@@ -14,7 +15,7 @@ namespace belgosles_test_app.Services.db
             List<Employee> res = new List<Employee>();
             if (company != null)
             {
-                using (ApplicationDBContext db = new ApplicationDBContext())
+                using (ApplicationDBContext db = new ApplicationDBContext(PathToDb.Path))
                 {
                     res = db.Employees.ToArray().Where(x => x.CompanyId == company.CompanyId).ToList();
                 }
@@ -24,7 +25,7 @@ namespace belgosles_test_app.Services.db
 
         internal static void Set(Employee employee, Company company)
         {
-            using (ApplicationDBContext db = new ApplicationDBContext())
+            using (ApplicationDBContext db = new ApplicationDBContext(PathToDb.Path))
             {
                 Company company1 = db.Companies.FirstOrDefault(x => x.CompanyId == company.CompanyId);
                 if (company1 != null)
@@ -41,7 +42,7 @@ namespace belgosles_test_app.Services.db
         {
             if (selectEmployee != null)
             {
-                using (ApplicationDBContext db = new ApplicationDBContext())
+                using (ApplicationDBContext db = new ApplicationDBContext(PathToDb.Path))
                 {
                     Employee employee = db.Employees.FirstOrDefault(x => x.EmployeeId == selectEmployee.EmployeeId);
                     if (employee != null)
@@ -56,7 +57,7 @@ namespace belgosles_test_app.Services.db
         {
             if (newEmplooye != null)
             {
-                using (ApplicationDBContext db = new ApplicationDBContext())
+                using (ApplicationDBContext db = new ApplicationDBContext(PathToDb.Path))
                 {
                     Employee employee = db.Employees.FirstOrDefault(x => x.EmployeeId == oldEmployee.EmployeeId);
                     if (employee != null)
