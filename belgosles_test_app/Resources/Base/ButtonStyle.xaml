@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Style x:Key="ButtomStyle" TargetType="Button">
+        <Setter Property="Margin" Value="3" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Width" Value="200" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+    </Style>
+    <Style x:Key="ButtonStyleRight" TargetType="Button" BasedOn="{StaticResource ButtomStyle}" >
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Width" Value="85" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+    </Style>
+    <Style x:Key="ButtonStyleLeft" TargetType="Button" BasedOn="{StaticResource ButtonStyleRight}" > 
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+</ResourceDictionary>
